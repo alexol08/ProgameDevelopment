@@ -60,35 +60,27 @@ bg=pygame.image.load("Lesson 2/background (1).png")
 moves={"Up": False, "Down": False, "Right":False, "Left":False}
 
 class Astronaut:
-    def __init__(self, center, speed_x, speed_y):
-        self.center=center
+    def __init__(self,x, y, speed_x, speed_y, player):
+        self.x=x
+        self.y=y
         self.speed_x=speed_x
         self.speed_y=speed_y
+        self.player = player
     def draw(self):
         self.image=pygame.image.load("Lesson 2/astronaut.png")
-        screen.blit(self.image, self.center)
+        screen.blit(self.image, (self.x, self.y))
     def movements(self):
-        if event.type ==pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                moves["up"]=True
-            if event.key == pygame.K_RIGHT:
-                moves["right"]=True
-            if event.key == pygame.K_LEFT:
-                moves["left"]=True
-            if event.key == pygame.K_DOWN:
-                moves["down"]=True
-        if event.type ==pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                moves["up"]=False
-            if event.key == pygame.K_RIGHT:
-                moves["right"]=False
-            if event.key == pygame.K_LEFT:
-                moves["left"]=False
-            if event.key == pygame.K_DOWN:
-                moves["down"]=False
+        keys = pygame.key.get_pressed()
+        if self.player == "1": 
+            if keys[pygame.K_UP]: self.y -=self.speed_y
+            if keys[pygame.K_DOWN]: self.y +=self.speed_y
+            if keys[pygame.K_RIGHT]: self.x +=self.speed_x
+            if keys[pygame.K_LEFT]: self.x -=self.speed_x
+
+        
 
 
-astro1=Astronaut((300,300), 2, 2)
+astro1=Astronaut(300, 300, 2, 2, "1")
 running=True
 while running:
     screen.blit(bg, (0,0))
@@ -97,10 +89,5 @@ while running:
         if event.type == pygame.QUIT:
             running=False
             break
-        astro1.movements()
-    if moves["Up"]: speed_y -=4
-    if moves["Left"]: speed_y_x -=4
-    if moves["Right"]: speed_x +=4
-    if moves["Down"]: speed_y +=4
-
+    astro1.movements()
     pygame.display.update()
